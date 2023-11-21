@@ -26,6 +26,8 @@ local param_GroundStationFail = Parameter()
 param_GroundStationFail:init('FS_GCS_ENABLE')
 local value_GroundStationFail = 0
 
+local ledFunction = 94; -- function used for LED control, 94-109 are avaliable for script control
+local ledNumber = 1; -- number of LEDs on the used strip
 
 function update()
 
@@ -90,8 +92,23 @@ function update()
 
 --Led control/feedback:
     print("\n".."Ready for flight: " .. tostring(readyForFlight).."\n\n")
+    local ledChannel = assert(SRV_Channels:find_channel(ledFunction),"LEDs channel not set")
+    ledChannel = ledChannel+1 -- convert to 1-16 from 0-15
+    assert(serialLED:set_num_neopixel(ledChannel, ledNumber),"Failed LED setup on channel "..ledChannel)
+
+    if readyForFlight then
+        for i = 0, ledNumber-1, 1 do
+            serialLED:set_RGB(ledChannel, i, 0, 255, 0) -- green
+        end
+    else
+        for i = 0, ledNumber-1, 1 do
+            serialLED:set_RGB(ledChannel, i, 255, 0, 0) -- red
+        end
+    end
+    serialLED:send(ledChannel)
+
     return update, 10000 -- call again in 10 seconds
 end
 
-return update, 100 -- first call after loading the script
+return update, 1000 -- first call after loading the script
 
