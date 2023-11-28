@@ -27,7 +27,7 @@ param_GroundStationFail:init('FS_GCS_ENABLE')
 local value_GroundStationFail = 0
 
 local ledFunction = 94; -- function used for LED control, 94-109 are avaliable for script control
-local ledNumber = 1; -- number of LEDs on the used strip
+local ledNumber = 5; -- number of LEDs on the used strip
 
 function update()
 
@@ -39,63 +39,72 @@ function update()
     if (battery:voltage(instanceNo) < minBatteryVoltage) then
         readyForFlight = false
     end
-    print("\n".."voltage: ".. tostring(battery:voltage(instanceNo)).. tostring(battery:voltage(instanceNo) > minBatteryVoltage).. "\n".. "num_sats: ".. tostring(gps:num_sats(instanceNo)).. tostring(gps:num_sats(instanceNo) > minSateliteNumber).. "\n".. "is_armed: ".. tostring(arming:is_armed()).. "\n".. "get_mode: ".. tostring(vehicle:get_mode()).. tostring(vehicle:get_mode() == desiredModeNumber).. "\n")
+    --print("\n".."voltage: ".. tostring(battery:voltage(instanceNo)).. tostring(battery:voltage(instanceNo) > minBatteryVoltage).. "\n".. "num_sats: ".. tostring(gps:num_sats(instanceNo)).. tostring(gps:num_sats(instanceNo) > minSateliteNumber).. "\n".. "is_armed: ".. tostring(arming:is_armed()).. "\n".. "get_mode: ".. tostring(vehicle:get_mode()).. tostring(vehicle:get_mode() == desiredModeNumber).. "\n")
+    gcs:send_text('6',"\n".."voltage: ".. tostring(battery:voltage(instanceNo)).. tostring(battery:voltage(instanceNo) > minBatteryVoltage).. "\n")
 
 
     if (gps:num_sats(instanceNo) < minSateliteNumber) then
         readyForFlight = false
     end
     --print("num_sats: ".. tostring(gps:num_sats(instanceNo)).. tostring(gps:num_sats(instanceNo) > minSateliteNumber).. "\n")
+    gcs:send_text(6,"num_sats: ".. tostring(gps:num_sats(instanceNo)).. tostring(gps:num_sats(instanceNo) > minSateliteNumber).. "\n")
 
     if not arming:is_armed() then
         readyForFlight = false
     end
     --print("is_armed: ".. tostring(arming:is_armed()).. "\n")
-
+    gcs:send_text(6,"is_armed: ".. tostring(arming:is_armed()).. "\n")
 
     if not (vehicle:get_mode() == desiredModeNumber) then
         readyForFlight = false
     end
     --print("get_mode: ".. tostring(vehicle:get_mode()).. tostring(vehicle:get_mode() == desiredModeNumber).. "\n")
-
+    gcs:send_text(6,"voltage: ".. tostring(battery:voltage(instanceNo)).. tostring(battery:voltage(instanceNo) > minBatteryVoltage).. "\n")
 
 --Parameters:
     if not (param_ThrottleFailsafe:get() == value_ThrottleFailsafe) then
         readyForFlight = false
     end
-    print("\n".."ThrottleFailsafe: ".. tostring(param_ThrottleFailsafe:get()).. tostring(param_ThrottleFailsafe:get() == value_ThrottleFailsafe).. "\n".."CrashCheck: ".. tostring(param_CrashCheck:get()).. tostring(param_CrashCheck:get() == value_CrashCheck).. "\n".."DeadReckon: ".. tostring(param_DeadReckon:get()).. tostring(param_DeadReckon:get() == value_DeadReckon).. "\n".."EKFAction: ".. tostring(param_EKFAction:get()).. tostring(param_EKFAction:get() == value_EKFAction).. "\n".."GroundStationFail: "..tostring(param_GroundStationFail:get()).. tostring(param_GroundStationFail:get() == value_GroundStationFail).. "\n")
-
+    --print("\n".."ThrottleFailsafe: ".. tostring(param_ThrottleFailsafe:get()).. tostring(param_ThrottleFailsafe:get() == value_ThrottleFailsafe).. "\n".."CrashCheck: ".. tostring(param_CrashCheck:get()).. tostring(param_CrashCheck:get() == value_CrashCheck).. "\n".."DeadReckon: ".. tostring(param_DeadReckon:get()).. tostring(param_DeadReckon:get() == value_DeadReckon).. "\n".."EKFAction: ".. tostring(param_EKFAction:get()).. tostring(param_EKFAction:get() == value_EKFAction).. "\n".."GroundStationFail: "..tostring(param_GroundStationFail:get()).. tostring(param_GroundStationFail:get() == value_GroundStationFail).. "\n")
+    gcs:send_text(6,"ThrottleFailsafe: ".. tostring(param_ThrottleFailsafe:get()).. tostring(param_ThrottleFailsafe:get() == value_ThrottleFailsafe).. "\n")
 
     if not (param_CrashCheck:get() == value_CrashCheck) then
         readyForFlight = false
     end
     --print("CrashCheck: ".. tostring(param_CrashCheck:get()).. tostring(param_CrashCheck:get() == value_CrashCheck).. "\n")
-
+    gcs:send_text(6,"CrashCheck: ".. tostring(param_CrashCheck:get()).. tostring(param_CrashCheck:get() == value_CrashCheck).. "\n")
 
     if not (param_DeadReckon:get() == value_DeadReckon) then
         readyForFlight = false
     end
    -- print("DeadReckon: ".. tostring(param_DeadReckon:get()).. tostring(param_DeadReckon:get() == value_DeadReckon).. "\n")
-
+    gcs:send_text(6,"DeadReckon: ".. tostring(param_DeadReckon:get()).. tostring(param_DeadReckon:get() == value_DeadReckon).. "\n")
 
     if not (param_EKFAction:get() == value_EKFAction) then
         readyForFlight = false
     end
     --print("EKFAction: ".. tostring(param_EKFAction:get()).. tostring(param_EKFAction:get() == value_EKFAction).. "\n")
-
+    gcs:send_text(6,"EKFAction: ".. tostring(param_EKFAction:get()).. tostring(param_EKFAction:get() == value_EKFAction).. "\n")
 
     if not (param_GroundStationFail:get() == value_GroundStationFail) then
         readyForFlight = false
     end
    -- print("GroundStationFail: "..tostring(param_GroundStationFail:get()).. tostring(param_GroundStationFail:get() == value_GroundStationFail).. "\n")
-
+    gcs:send_text(6,"GroundStationFail: "..tostring(param_GroundStationFail:get()).. tostring(param_GroundStationFail:get() == value_GroundStationFail).. "\n")
 
 --Led control/feedback:
-    print("\n".."Ready for flight: " .. tostring(readyForFlight).."\n\n")
-    local ledChannel = assert(SRV_Channels:find_channel(ledFunction),"LEDs channel not set")
-    ledChannel = ledChannel+1 -- convert to 1-16 from 0-15
-    assert(serialLED:set_num_neopixel(ledChannel, ledNumber),"Failed LED setup on channel "..ledChannel)
+    --print("\n".."Ready for flight: " .. tostring(readyForFlight).."\n\n")
+    gcs:send_text(6,"\n".."Ready for flight: " .. tostring(readyForFlight).."\n\n")
 
+    local ledChannel = assert(SRV_Channels:find_channel(ledFunction),"LEDs channel not set")
+    if (ledChannel == nil) then
+        gcs:send_text(3,"LEDs channel not set")
+    end
+    ledChannel = ledChannel+1 -- convert to 1-16 from 0-15
+    local ledSuccess = assert(serialLED:set_num_neopixel(ledChannel, ledNumber),"Failed LED setup on channel "..ledChannel)
+     if not ledSuccess then
+        gcs:send_text(3,"Failed LED setup on channel "..ledChannel)
+     end
     if readyForFlight then
         for i = 0, ledNumber-1, 1 do
             serialLED:set_RGB(ledChannel, i, 0, 255, 0) -- green
