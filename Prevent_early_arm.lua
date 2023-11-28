@@ -6,8 +6,8 @@ local armingDelay = 100000 -- delay between detecting start and calling arming f
 
 function detectStart()
   if baro:get_altitude() > triggerAltitude then
-    print("Mini drone start detected, arming in " .. armingDelay / 1000 .. " seconds.")
-    --TODO: possibly disarm here?
+    gcs:send_text(6,"Mini drone start detected, arming in " .. armingDelay / 1000 .. " seconds.")
+    --TODO: prevent automatic disarm, choose good mode for default
     return armThrow, armingDelay
   else
     return detectStart, checkDelay
@@ -15,8 +15,12 @@ function detectStart()
 end
 
 function armThrow()
-  assert(arming:arm(), "Mini drone failed to arm!")
-  assert(vehicle:set_mode(throwModeID), "Mini drone failed to set throw mode!")
+  if not arming:arm() then
+    gcs:send_text(4,"Mini drone failed to arm!")
+  end
+  if not vehicle:set_mode(throwModeID) then
+    gcs:send_text(4,"Mini drone failed to set throw mode!")
+  end
   if not (vehicle:get_mode() == throwModeID and arming:is_armed()) then
     return armThrow, checkDelay -- try to set throw mode again, or the drone could fall to its death
   end
