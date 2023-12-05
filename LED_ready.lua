@@ -1,6 +1,6 @@
 
 local minSateliteNumber = 3     -- Threshold for number of satelites to be considered ready for flight
-local minBatteryVoltage = 12    -- Threshold for battery voltage to be considered ready for flight TODO: verify units, likely mV not V
+local minBatteryVoltage = 12    -- Threshold for battery voltage to be considered ready for flight
 local instanceNo = 0            -- Number of the instance checked
 local desiredModeNumber = 18    -- ID of the mode to be set when ready for flight, default 18=THROW per ardupilot documentation
 
@@ -55,7 +55,7 @@ function update()
 
     if not (vehicle:get_mode() == desiredModeNumber) then
         readyForFlight = false
-        gcs:send_text(5,"voltage: ".. tostring(battery:voltage(instanceNo)).. "\n")
+        gcs:send_text(5,"mode: ".. tostring(vehicle:get_mode()).. "\n")
     end
 
 
