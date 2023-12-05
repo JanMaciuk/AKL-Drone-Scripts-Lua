@@ -24,7 +24,7 @@ function armThrow()
   if not (vehicle:get_mode() == throwModeID and arming:is_armed()) then
     return armThrow, checkDelay -- try to set throw mode again, or the drone could fall to its death
   end
-  print("Mini drone armed and in throw mode, ready for drop")
+  gcs:send_text(6,"Mini drone armed and in throw mode, ready for drop")
 end
 
 return detectStart, checkDelay
