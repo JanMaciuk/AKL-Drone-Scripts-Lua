@@ -2,7 +2,7 @@
 local triggerAltitude = 5  -- altitude above which start will be detected in meters (as calibrated by the barometer)
 local throwModeID = 18
 local checkDelay = 1000    -- delay between calling functions in milliseconds
-local armingDelay = 100000 -- delay between detecting start and calling arming function in milliseconds
+local armingDelay = 50000 -- delay between detecting start and calling arming function in milliseconds
 
 function detectStart()
   if baro:get_altitude() > triggerAltitude then
