@@ -88,6 +88,7 @@ function ledControl()
     local ledChannel = SRV_Channels:find_channel(ledFunction)
     if (ledChannel == nil) then
         gcs:send_text(3,"LEDs channel not set")
+        return ledControl, checkDelay -- try again in a moment
     end
     ledChannel = ledChannel+1 -- convert to 1-16 from 0-15
 
@@ -95,6 +96,7 @@ function ledControl()
     local ledSuccess = serialLED:set_num_neopixel(ledChannel, ledNumber)
     if not ledSuccess then
         gcs:send_text(3,"Failed LED setup on channel "..ledChannel)
+        return ledControl, checkDelay -- try again in a moment
     end
 
     if not (vehicle:get_mode() == beaconModeNumber) then
