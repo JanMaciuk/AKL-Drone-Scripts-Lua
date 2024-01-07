@@ -2,7 +2,7 @@ local minSateliteNumber = 3     -- Threshold for number of satelites to be consi
 local minBatteryVoltage = 12    -- Threshold for battery voltage to be considered ready for flight
 local instanceNo = 0            -- Number of the instance checked
 local readyModeNumber = 18      -- ID of the mode to be set when ready for flight, default 18=THROW per ardupilot documentation
-local beaconModeNumber = 4      -- ID of the mode that will be set when drone becomes a beacon, 4=GUIDED per ardupilot documentation
+local beaconModeNumber = 3      -- ID of the mode that will be set when drone becomes a beacon, 3=AUTO per ardupilot documentation
 local ledFunction = 94;         -- function used for LED control, 94-109 are avaliable for script control
 local ledNumber = 5;            -- number of LEDs on the used strip
 local checkDelay = 5000         -- delay between calling functions in milliseconds
